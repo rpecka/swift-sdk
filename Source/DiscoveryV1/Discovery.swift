@@ -1193,6 +1193,7 @@ public class Discovery {
         withFilter filter: String? = nil,
         withQuery query: String? = nil,
         withAggregation aggregation: String? = nil,
+		withNaturalLanguageQuery naturalLangaugeQuery: String? = nil,
         count: Int? = nil,
         return returnQuery: String? = nil,
         failure: ((Error) -> Void)? = nil,
@@ -1228,6 +1229,16 @@ public class Discovery {
             }
             queryParameters.append(URLQueryItem(name: "aggregation", value: aggregationEncoded))
         }
+		
+		if let naturalLanguageQuery = naturalLangaugeQuery {
+			guard let naturalLanguageQueryEncoded = naturalLanguageQuery.addingPercentEncoding(withAllowedCharacters: unreservedCharacters) else {
+				let error = failWithError(reason: encodingError)
+				failure?(error)
+				return
+			}
+			queryParameters.append(URLQueryItem(name: "natural_language_query", value: naturalLanguageQueryEncoded))
+		}
+		
         if let count = count {
             queryParameters.append(URLQueryItem(name: "count", value: "\(count)"))
         }
