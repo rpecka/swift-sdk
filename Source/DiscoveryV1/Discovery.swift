@@ -1196,6 +1196,8 @@ public class Discovery {
 		withNaturalLanguageQuery naturalLangaugeQuery: String? = nil,
         count: Int? = nil,
         return returnQuery: String? = nil,
+		returnPassages passages: Bool? = nil,
+		passagesCount: Int? = nil,
         failure: ((Error) -> Void)? = nil,
         success: @escaping(QueryResponse) -> Void)
     {
@@ -1245,6 +1247,12 @@ public class Discovery {
         if let returnQuery = returnQuery {
             queryParameters.append(URLQueryItem(name: "return", value: returnQuery))
         }
+		if let passages = passages {
+			queryParameters.append(URLQueryItem(name: "passages", value: "\(passages)"))
+		}
+		if let passagesCount = passagesCount {
+			queryParameters.append(URLQueryItem(name: "passages.count", value: "\(passagesCount)"))
+		}
 
         // construct REST request
         let request = RestRequest(
