@@ -21,6 +21,9 @@ public struct QueryResponse: JSONDecodable {
 
     /// Number of matching results.
     public let matchingResults: Int?
+	
+	/// Passages returned by the Discovery service.
+	public let passages: [Passage]?
 
     /// Results returned by the Discovery service.
     public let results: [Result]?
@@ -34,6 +37,7 @@ public struct QueryResponse: JSONDecodable {
     /// Used internally to initialize a `QueryResponse` model from JSON.
     public init(json: JSONWrapper) throws {
         matchingResults = try? json.getInt(at: "matching_results")
+		passages = try? json.decodedArray(at: "passages", type: Passage.self)
         results = try? json.decodedArray(at: "results", type: Result.self)
         aggregations = try? json.decodedArray(at: "aggregations", type: Aggregation.self)
         self.json = try json.getDictionaryObject()
